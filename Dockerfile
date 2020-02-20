@@ -1,4 +1,4 @@
-FROM php:7.3-cli
+FROM php:7.4-cli
 MAINTAINER corycollier@corycollier.com
 
 # Do all of the global system package installations
@@ -22,14 +22,14 @@ RUN apt -y update \
         ca-certificates \
         sqlite3 \
         libsqlite3-dev \
-        less
+        less \
+        zsh
 
 # Add all of the php specific packages
 RUN docker-php-source extract \
     && docker-php-ext-configure gd \
-        --with-freetype-dir=/usr/include/ \
-        --with-jpeg-dir=/usr/include/ \
-        --with-png-dir=/usr/include/ \
+        --with-freetype=/usr/include/ \
+        --with-jpeg=/usr/include/ \
         --enable-gd-jis-conv \
     && docker-php-ext-install \
         gmp \
@@ -61,6 +61,7 @@ RUN export COMPOSER_ALLOW_SUPERUSER=1 \
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 RUN curl -sfL git.io/antibody | sh -s - -b /usr/local/bin
 ADD dotfiles/* /root/
+ADD config/php.ini /usr/local/etc/php/conf.d/custom.ini
 
 ENV TERM xterm-256color
 ENV POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD true
