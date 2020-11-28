@@ -45,18 +45,13 @@ RUN docker-php-source extract \
         zip
 
 # Install modules not able to be installed any other way
-RUN pecl install xdebug
+# RUN pecl install xdebug
 
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php \
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
-
-# Configure composer
-RUN export COMPOSER_ALLOW_SUPERUSER=1 \
-  && composer global init \
-  && composer global require hirak/prestissimo
 
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 RUN curl -sfL git.io/antibody | sh -s - -b /usr/local/bin
