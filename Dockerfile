@@ -23,6 +23,7 @@ RUN apt -y update \
         sqlite3 \
         libsqlite3-dev \
         less \
+        rsync \
         zsh
 
 # Add all of the php specific packages
